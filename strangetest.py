@@ -32,7 +32,10 @@ while(True):
             inputx = [i/SIZE,j/SIZE,recur[0],recur[1]]
             out[i][j] = normalize(np.matmul(inputx,weights[0]))            
             prev_out[i][j] = out[i][j]
-    out = cv2.resize(out,(512,512))
+    out = cv2.resize(out,(512,512),interpolation=cv2.INTER_AREA)            
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(out,"z: "+str(weights[1][0][0]),(40,40) ,cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255))
+    
     cv2.imshow('test',out)
     k = cv2.waitKey(1)
     if(k==ord('q')):

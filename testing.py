@@ -29,7 +29,7 @@ while(True):
             inputx = [i*input_factor,j*input_factor,d1*distance_factor,d2*distance_factor,prev_out[i][j][0],prev_out[i][j][1]]
             out[i][j] = normalize(np.matmul(inputx,weights[0]))            
             prev_out[i][j] = normalize(np.matmul(out[i][j],weights[1]))
-    out = cv2.resize(out,(512,512))            
+    out = cv2.resize(out,(512,512),interpolation=cv2.INTER_AREA)            
     cv2.imshow('test',out)
     k = cv2.waitKey(1)
     if(k==ord('q')):
@@ -46,7 +46,7 @@ while(True):
     elif(k==ord('a')):
         distance_factor +=1
     elif(k==ord('z')):
-        distance_factor -=1
+        distance_factor -=0.1
     elif(k==ord('s')):
         np.save("saved"+str(saved_idx)+".npy",np.array(weights))
     elif(k==ord('v')):
