@@ -50,7 +50,7 @@ while(True):
     elif(k==ord("y")):
         with open("weird.txt","r") as file:          
             weights[1] = np.array(eval(file.read()))
-        with open("weird3.txt","r") as file:
+        with open("drugs.txt","r") as file:
             weights[0] = np.array(eval(file.read()))
     elif(k==ord("t")):
         #with open("weird.txt","w") as file:
