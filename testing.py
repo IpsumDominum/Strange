@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 def normalize (x):
     x = np.array(x)
-    return x/sum(x)/1
+    return x/sum(x)
 """
 weights = [
         np.random.normal(size=(4,3)),
@@ -29,7 +29,10 @@ while(True):
             inputx = [i*input_factor,j*input_factor,d1*distance_factor,d2*distance_factor,prev_out[i][j][0],prev_out[i][j][1]]
             out[i][j] = normalize(np.matmul(inputx,weights[0]))            
             prev_out[i][j] = normalize(np.matmul(out[i][j],weights[1]))
-    out = cv2.resize(out,(512,512),interpolation=cv2.INTER_AREA)            
+    out = cv2.resize(out,(512,512))            
+    cv2.putText(out,"distance: "+str(distance_factor),(40,40) ,cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0))
+    cv2.putText(out,"input: "+str(input_factor),(40,80) ,cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0))
+    cv2.putText(out,"recur: "+str(prev_out_factor),(40,120) ,cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,0))
     cv2.imshow('test',out)
     k = cv2.waitKey(1)
     if(k==ord('q')):

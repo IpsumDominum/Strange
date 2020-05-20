@@ -20,6 +20,7 @@ out = np.zeros((SIZE,SIZE,3))
 for i in range(SIZE):
     for j in range(SIZE):
         inputx = [i/64,j/64]
+        print(inputx)
         out[i][j] = normalize(np.matmul(inputx,weights[0]))
 while(True):    
     #out = normalize(out)*2550000

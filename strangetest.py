@@ -5,7 +5,7 @@ def normalize (x):
     sum_x = sum(x)
     if(sum_x==0):
         sum_x = 0.001
-    return x/sum_x/10
+    return x/sum_x/40
 weights = [
         np.random.normal(size=(4,3)),
         np.zeros((3,2))
@@ -19,30 +19,43 @@ input_factor = 1
 distance_factor = 1
 saved_idx = 0
 error = np.zeros((SIZE,SIZE,2))
-result = cv2.imread("../download.jpeg")
-cv2.imshow("mona",result)
+result = cv2.resize(cv2.imread("../download.jpeg"),(SIZE,SIZE))/255
+#cv2.imshow("mona",result)
 OMODE = True
 PMODE = True
 amount = 0.1
+
 while(True):
     out = np.zeros((SIZE,SIZE,3))
     for i in range(SIZE):
         for j in range(SIZE):
             recur = normalize(np.matmul(prev_out[i][j],weights[1]))            
-            inputx = [i/SIZE,j/SIZE,recur[0],recur[1]]
-            out[i][j] = normalize(np.matmul(inputx,weights[0]))            
+            inputx = [result[i][j][0],result[i][j][1],recur[0],recur[1]]
+            #inputx = [result[i][j][0],result[i][j][1],recur[0],recur[1]]
+            out[i][j] += normalize(np.matmul(inputx,weights[0]))            
             prev_out[i][j] = out[i][j]
     out = cv2.resize(out,(512,512),interpolation=cv2.INTER_AREA)            
+
+    #out = cv2.resize(out,(512,512))            
     font = cv2.FONT_HERSHEY_SIMPLEX
     cv2.putText(out,"z: "+str(weights[1][0][0]),(40,40) ,cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255))
     
     cv2.imshow('test',out)
     k = cv2.waitKey(1)
+    if(k==ord('l')):
+        weights[0] = np.random.normal(size=(4,3))
     if(k==ord('q')):
         cv2.destroyAllwindows()
         break
+    elif(k==ord("y")):
+        with open("weird.txt","r") as file:          
+            weights[1] = np.array(eval(file.read()))
+        with open("weird3.txt","r") as file:
+            weights[0] = np.array(eval(file.read()))
     elif(k==ord("t")):
-        with open("weird.txt","w") as file:
+        #with open("weird.txt","w") as file:
+        #    file.write(str(weights[1]))
+        with open("weird2.txt","w") as file:
             file.write(str(weights[0]))
     elif(k==ord('p')):
         if(PMODE):
